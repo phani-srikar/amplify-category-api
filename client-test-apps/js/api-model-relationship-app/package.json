@@ -38,6 +38,7 @@
     "build": "react-scripts build",
     "eject": "react-scripts eject",
     "test": "react-scripts test src/__tests__/api.test.ts",
+    "test:docs": "rm -rf documentation && mkdir documentation && cross-env TEST_HARNESS_STAGE=documentation npm run test",
     "test:setup": "cross-env TEST_HARNESS_STAGE=setup npm run test",
     "test:execute": "cross-env TEST_HARNESS_STAGE=execute npm run test",
     "test:watch": "cross-env TEST_HARNESS_STAGE=watch npm run test",

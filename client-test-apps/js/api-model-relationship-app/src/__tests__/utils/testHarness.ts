@@ -2,7 +2,7 @@ import path from 'path';
 import { existsSync, PathLike, rmSync, lstatSync } from 'fs';
 import cypress from 'cypress';
 import { setup, teardown } from 'jest-dev-server';
-import { AmplifyCLI } from './amplifyCLI';
+import { AmplifyCLI, AmplifyDocs, AmplifyInterface } from './amplifyCLI';
 
 jest.setTimeout(20 * 60 * 1000); // 20 minutes
 
@@ -11,6 +11,7 @@ enum TestExecutionStage {
   CYPRESS_EXECUTE,
   CYPRESS_WATCH,
   TEARDOWN,
+  DOCUMENTATION,
 };
 
 /**
@@ -27,6 +28,8 @@ const getTestExecutionStages = (): Set<TestExecutionStage> => {
       return new Set([TestExecutionStage.CYPRESS_WATCH]);
     case 'teardown':
       return new Set([TestExecutionStage.TEARDOWN]);
+    case 'documentation':
+      return new Set([TestExecutionStage.DOCUMENTATION]);
     default:
       return new Set([TestExecutionStage.SETUP, TestExecutionStage.CYPRESS_EXECUTE, TestExecutionStage.TEARDOWN]);
     }
@@ -57,14 +60,21 @@ const cleanupJSGeneratedFiles = (projectRoot: string) => {
   ].map(it => path.join(projectRoot, ...it)).forEach(deleteIfExists);
 };
 
-export const executeAmplifyTestHarness = (testName: string, projectRoot: string, setupApp: (cli: AmplifyCLI) => Promise<void>) => {
+export const executeAmplifyTestHarness = (testName: string, projectRoot: string, setupApp: (amplify: AmplifyInterface) => Promise<void>) => {
   describe(testName, () => {
     const cli = new AmplifyCLI(projectRoot);
+    const docs = new AmplifyDocs(path.join(projectRoot, 'documentation', `${testName.replace(/\s/g, '')}.md`));
 
     /**
      * Set up and deploy amplify project, start local webserver.
      */
     beforeAll(async () => {
+      if (getTestExecutionStages().has(TestExecutionStage.DOCUMENTATION)) {
+        await setupApp(docs);
+        docs.write()
+      }
+
+
       if (getTestExecutionStages().has(TestExecutionStage.SETUP)) {
         cleanupJSGeneratedFiles(projectRoot);
         await setupApp(cli);

@@ -1,11 +1,8 @@
-import path from 'path';
-import { AmplifyCLI, AmplifyInterface } from './utils/amplifyCLI';
-import { executeAmplifyTestHarness } from './utils/testHarness';
 
-const PROJECT_ROOT = path.join(__dirname, '..', '..');
-const envName = 'devtest';
-const projName = 'simplemodel';
-const schemaText = `
+amplify init
+amplify api add
+# Update amplify/backend/api/<api_name>/schema.graphql with
+
 # Standalone Model
 # Non-Model Types
 type Todo @model @auth(rules: [{ provider: apiKey, allow: public }]) {
@@ -68,13 +65,7 @@ type MultiAuth @model @auth(rules: [
   id: ID!
   content: String @default(value: "Default Content")
 }
-`;
 
-executeAmplifyTestHarness('simple test', PROJECT_ROOT, async (amp: AmplifyInterface) => {
-  await amp.initializeProject({ name: projName, envName });
-  await amp.addApiWithoutSchema();
-  await amp.updateSchema(projName, schemaText);
-  await amp.addAuth();
-  await amp.push();
-  await amp.codegen({ statementDepth: 3 });
-});
+amplify add auth
+amplify push
+amplify add codegen

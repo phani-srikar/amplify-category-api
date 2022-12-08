@@ -232,7 +232,62 @@ const defaultAddApi: AddApiOptions = {
   testingWithLatestCodebase: false,
 };
 
-export class AmplifyCLI {
+export interface AmplifyInterface {
+  initializeProject (settings?: Partial<typeof defaultSettings>): Promise<void>;
+  addApiWithoutSchema(opts?: Partial<AddApiOptions & { apiKeyExpirationDays: number }>): void;
+  updateSchema(projectName: string, schemaText: string, forceUpdate?: boolean): void;
+  delete(profileConfig?: any, usingLatestCodebase?: boolean): Promise<void>;
+  push(testingWithLatestCodebase?: boolean): Promise<void>;
+  codegen (opts?: { statementDepth?: number }, usingLatestCodebase?: boolean): Promise<void>;
+  addAuth (): Promise<void>;
+}
+
+export class AmplifyDocs implements AmplifyInterface {
+  private docs: string = "";
+  constructor(private outputPath: string) {}
+
+  write (): void {
+    fs.writeFileSync(this.outputPath, this.docs);
+  }
+
+  private appendCommand (command: string): void {
+    this.docs += `\n${command}`;
+  }
+
+  async initializeProject (settings?: Partial<typeof defaultSettings>): Promise<void> {
+    this.appendCommand('amplify init');
+  }
+
+  addApiWithoutSchema(opts?: Partial<AddApiOptions & { apiKeyExpirationDays: number }>): void {
+    this.appendCommand('amplify api add');
+  }
+
+  updateSchema(projectName: string, schemaText: string, forceUpdate: boolean): void {
+    this.appendCommand(`# Update amplify/backend/api/<api_name>/schema.graphql with\n${schemaText}`);
+  }
+
+  delete(profileConfig?: any, usingLatestCodebase?: boolean): Promise<void> {
+    this.appendCommand('amplify delete');
+    return Promise.resolve();
+  }
+
+  push(testingWithLatestCodebase?: boolean): Promise<void> {
+    this.appendCommand('amplify push');
+    return Promise.resolve();
+  }
+
+  codegen (opts?: { statementDepth?: number }, usingLatestCodebase?: boolean): Promise<void> {
+    this.appendCommand('amplify add codegen');
+    return Promise.resolve();
+  }
+
+  addAuth (): Promise<void> {
+    this.appendCommand('amplify add auth');
+    return Promise.resolve();
+  }
+}
+
+export class AmplifyCLI implements AmplifyInterface {
   isAmplifySetup: boolean
   projectRoot: string;
 
