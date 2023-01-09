@@ -34,7 +34,7 @@ export function getCLIPath(testingWithLatestCodebase = false) {
       return process.env.AMPLIFY_PATH;
     }
     console.log("Resolving CLI path to present executable:", process.platform === 'win32' ? 'amplify.exe' : 'amplify');
-    return process.platform === 'win32' ? 'amplify.exe' : 'amplify';
+    return process.platform === 'win32' ? 'amplify.exe' : 'amplify-dev';
   }
   const amplifyScriptPath = path.join(__dirname, '..', '..', '..', 'node_modules', 'amplify-cli-internal', 'bin', 'amplify');
   console.log("Resolving CLI Path to source code:", amplifyScriptPath);
