@@ -1,5 +1,9 @@
 import { amplifyConfigure as configure, injectSessionToken, isCI } from 'amplify-category-api-e2e-core';
 
+global.storeCLIExecutionLog = data => {
+  console.log(data);
+};
+
 async function setupAmplify() {
   if (isCI()) {
     const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID;

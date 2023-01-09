@@ -3,6 +3,10 @@ import { addApiWithoutSchema, updateApiSchema, getProjectMeta } from 'amplify-ca
 import { createNewProjectDir, deleteProjectDir } from 'amplify-category-api-e2e-core';
 import { addEnvironment } from '../../environment/env';
 
+global.storeCLIExecutionLog = data => {
+  console.log(data);
+};
+
 describe('amplify add api', () => {
   let projRoot: string;
   beforeEach(async () => {
