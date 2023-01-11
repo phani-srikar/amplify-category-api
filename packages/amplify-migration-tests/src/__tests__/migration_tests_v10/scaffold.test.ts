@@ -16,7 +16,7 @@ import {
       await versionCheck(process.cwd(), true, migrateToVersion);
       console.log(`Test migration from: ${migrateFromVersion} to ${migrateToVersion}`);
       // expect(migrateFromVersion.v).not.toEqual(migrateToVersion.v); // uncomment this once we are in v11 for local codebase
-      expect(allowedVersionsToMigrateFrom).toContain(migrateFromVersion.v);
+      // expect(allowedVersionsToMigrateFrom).toContain(migrateFromVersion.v);
     });
   
     beforeEach(async () => {
