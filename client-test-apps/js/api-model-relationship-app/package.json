@@ -36,6 +36,9 @@
   "resolutions": {
     "joi": "17.7.0"
   },
+  "overrides": {
+    "joi": "17.7.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
