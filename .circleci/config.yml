@@ -1,4 +1,4 @@
-version: 2.1
+version: 2.2
 
 # this allows you to use CircleCI's dynamic configuration feature
 setup: true
