@@ -22,7 +22,7 @@
     "clean": "rimraf ./lib"
   },
   "dependencies": {
-    "@aws-amplify/graphql-transformer-core": "^0.18.4",
+    "@aws-amplify/graphql-transformer-core": "^0.18.2",
     "amplify-headless-interface": "^1.15.0",
     "chalk": "^4.1.1",
     "execa": "^5.1.1",
