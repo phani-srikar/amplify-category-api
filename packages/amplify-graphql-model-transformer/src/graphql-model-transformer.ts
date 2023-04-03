@@ -72,6 +72,7 @@ import {
   extendTypeWithDirectives,
   makeCreateInputField,
   makeDeleteInputField,
+  makeSyncQueryFilterInput,
   makeListQueryFilterInput,
   makeSubscriptionQueryFilterInput,
   makeListQueryModel,
@@ -951,8 +952,8 @@ export class ModelTransformer extends TransformerModelBase implements Transforme
         ];
       }
       case QueryFieldType.SYNC: {
-        const syncFilterInputName = toPascalCase(['Model', type.name.value, 'FilterInput']);
-        const syncFilterInputs = makeListQueryFilterInput(ctx, syncFilterInputName, type);
+        const syncFilterInputName = toPascalCase(['ModelSync', type.name.value, 'FilterInput']);
+        const syncFilterInputs = makeSyncQueryFilterInput(ctx, syncFilterInputName, type);
         const conditionInputName = syncFilterInputs.name.value;
         if (!ctx.output.getType(conditionInputName)) {
           ctx.output.addInput(syncFilterInputs);
