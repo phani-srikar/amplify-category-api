@@ -1,6 +1,6 @@
 {
   "name": "@aws-amplify/graphql-auth-transformer",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Amplify GraphQL @auth transformer",
   "repository": {
     "type": "git",
@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@aws-amplify/graphql-model-transformer": "1.1.1",
-    "@aws-amplify/graphql-relational-transformer": "1.1.1",
+    "@aws-amplify/graphql-relational-transformer": "1.1.2",
     "@aws-amplify/graphql-transformer-core": "1.1.1",
     "@aws-amplify/graphql-transformer-interfaces": "2.1.1",
     "aws-cdk-lib": "~2.68.0",
@@ -45,7 +45,7 @@
     "amplify-prompts": "^2.6.5"
   },
   "devDependencies": {
-    "@aws-amplify/graphql-index-transformer": "1.1.1",
+    "@aws-amplify/graphql-index-transformer": "1.1.2",
     "@aws-amplify/graphql-searchable-transformer": "1.1.1",
     "@types/node": "^12.12.6"
   },
