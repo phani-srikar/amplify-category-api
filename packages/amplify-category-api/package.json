@@ -41,7 +41,7 @@
     "@aws-amplify/graphql-searchable-transformer": "1.1.1",
     "@aws-amplify/graphql-transformer-core": "1.1.1",
     "@aws-amplify/graphql-transformer-interfaces": "2.1.1",
-    "@aws-amplify/graphql-transformer-migrator": "2.1.1",
+    "@aws-amplify/graphql-transformer-migrator": "2.1.2",
     "@aws-cdk/aws-apigatewayv2-alpha": "~2.68.0-alpha.0",
     "@graphql-tools/merge": "^6.0.18",
     "@octokit/rest": "^18.0.9",
