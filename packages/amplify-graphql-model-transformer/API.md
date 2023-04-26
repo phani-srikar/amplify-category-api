@@ -133,6 +133,12 @@ export const makeSubscriptionFilterInput: (ctx: TransformerTransformSchemaStepCo
 export const makeSubscriptionQueryFilterInput: (ctx: TransformerTransformSchemaStepContextProvider, name: string, object: ObjectTypeDefinitionNode) => InputObjectTypeDefinitionNode;
 
 // @public (undocumented)
+export const makeSyncFilterInput: (ctx: TransformerTransformSchemaStepContextProvider, name: string, object: ObjectTypeDefinitionNode) => InputObjectDefinitionWrapper;
+
+// @public (undocumented)
+export const makeSyncQueryFilterInput: (ctx: TransformerTransformSchemaStepContextProvider, name: string, object: ObjectTypeDefinitionNode) => InputObjectTypeDefinitionNode;
+
+// @public (undocumented)
 export const makeUpdateInputField: (obj: ObjectTypeDefinitionNode, modelDirectiveConfig: ModelDirectiveConfiguration, knownModelTypes: Set<string>, document: DocumentNode, isSyncEnabled: boolean) => InputObjectTypeDefinitionNode;
 
 // @public (undocumented)
