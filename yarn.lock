@@ -134,7 +134,7 @@
     promise-sequential "^1.1.1"
     uuid "^8.3.2"
 
-"@aws-amplify/amplify-cli-core@4.0.1", "@aws-amplify/amplify-cli-core@4.0.4":
+"@aws-amplify/amplify-cli-core@4.0.1":
   version "4.0.1"
   resolved "https://registry.npmjs.org/@aws-amplify/amplify-cli-core/-/amplify-cli-core-4.0.1.tgz#e48c3ceb727fd8ec12c9b756abff0f1978842ccf"
   integrity sha512-MqTdJCGN/ZtHk2eM8gXLQfuOREVfUwvfDmbKIHWkworfVSxAuHznfItu+GtYJbjZBsR/iu8n56wev/LRzWQicg==
