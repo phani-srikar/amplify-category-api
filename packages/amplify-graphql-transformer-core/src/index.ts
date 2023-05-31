@@ -58,6 +58,15 @@ export {
   RDSConnectionSecrets,
   ImportedDataSourceConfig,
   RDSDataSourceConfig,
+  AmplifyApiGraphQlResourceStackTemplate,
+  AppsyncApiStack,
+  ModelDirectiveStack,
+  AppsyncStackCommon,
+  DDBModelDirectiveStack,
+  HttpsDirectiveStack,
+  OpenSearchDirectiveStack,
+  FunctionDirectiveStack,
+  PredictionsDirectiveStack,
 } from './types';
 /**
  * Returns the extra set of directives that are supported by AppSync service.

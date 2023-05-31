@@ -3,7 +3,6 @@ import {
   RDSConnectionSecrets,
   ImportedRDSType,
   MYSQL_DB_TYPE,
-  OverrideConfig,
   ResolverConfig,
   TransformerProjectConfig,
 } from '@aws-amplify/graphql-transformer-core';
@@ -246,7 +245,6 @@ const _buildProject = async (context: $TSContext, opts: TransformerProjectOption
     sandboxModeEnabled: opts.sandboxModeEnabled,
     userDefinedSlots,
     resolverConfig: opts.resolverConfig,
-    overrideConfig: opts.overrideConfig,
   });
 
   const { schema, modelToDatasourceMap } = userProjectConfig;

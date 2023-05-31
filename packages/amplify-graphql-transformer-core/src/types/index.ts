@@ -9,3 +9,14 @@ export {
   ImportedDataSourceConfig,
   RDSDataSourceConfig,
 } from './import-appsync-api-types';
+export {
+  AmplifyApiGraphQlResourceStackTemplate,
+  AppsyncApiStack,
+  ModelDirectiveStack,
+  AppsyncStackCommon,
+  DDBModelDirectiveStack,
+  HttpsDirectiveStack,
+  OpenSearchDirectiveStack,
+  FunctionDirectiveStack,
+  PredictionsDirectiveStack,
+} from './amplify-api-resource-stack-types';

@@ -4,18 +4,11 @@ import * as vm from "vm2";
 import * as path from "path";
 import _ from 'lodash';
 import { stateManager } from "@aws-amplify/amplify-cli-core";
-import { StackManager } from "@aws-amplify/graphql-transformer-core";
+import { AmplifyApiGraphQlResourceStackTemplate, StackManager } from "@aws-amplify/graphql-transformer-core";
 import { convertToAppsyncResourceObj, getStackMeta } from "./utils";
-import { OverrideConfig, ConstructResourceMeta } from "./types";
-import { AmplifyApiGraphQlResourceStackTemplate } from "./amplify-api-resource-stack-types";
+import { ConstructResourceMeta } from "./types";
 
-
-export function applyOverride(overrideConfig: OverrideConfig, stackManager: StackManager): AmplifyApiGraphQlResourceStackTemplate {
-  if (!overrideConfig.overrideFlag) {
-    return {};
-  }
-
-  const overrideFilePath = path.join(overrideConfig.overrideDir, "build", "override.js");
+export function applyOverride(stackManager: StackManager, overrideFilePath: string): AmplifyApiGraphQlResourceStackTemplate {
   if (!fs.existsSync(overrideFilePath)) {
     return {};
   }
@@ -101,15 +94,6 @@ export class InvalidOverrideError extends Error {
   }
 }
 
-export function getResourceOverrides(backendDir: string, apiName: string, stackManager?: StackManagerProvider | null): AmplifyApiGraphQlResourceStackTemplate {
-  if (stackManager) {
-    const overrideDir = path.join(backendDir, 'api', apiName);
-    const overrideConfig = {
-      overrideFlag: true,
-      overrideDir: overrideDir,
-      resourceName: apiName
-    };
-    return applyOverride(overrideConfig, stackManager as StackManager);
-  }
-  return {};
+export function getResourceOverrides(stackManager: StackManager, backendDir: string, apiName: string): AmplifyApiGraphQlResourceStackTemplate {
+  return applyOverride(stackManager, path.join(backendDir, 'api', apiName));
 }

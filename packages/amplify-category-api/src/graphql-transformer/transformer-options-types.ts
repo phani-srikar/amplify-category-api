@@ -7,7 +7,6 @@ import {
   Template
 } from '@aws-amplify/graphql-transformer-interfaces';
 import {
-  OverrideConfig,
   ResolverConfig,
   TransformerProjectConfig,
 } from '@aws-amplify/graphql-transformer-core';
@@ -37,7 +36,6 @@ export type TransformerProjectOptions<T> = {
   stacks: Record<string, Template>;
   sandboxModeEnabled?: boolean;
   sanityCheckRules: SanityCheckRules;
-  overrideConfig: OverrideConfig;
 };
 
 type SanityCheckRules = {

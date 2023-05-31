@@ -5,12 +5,6 @@ export type ConstructResourceMeta = {
   resourceType: string;
 };
 
-export type OverrideConfig = {
-  overrideFlag: boolean;
-  overrideDir: string;
-  resourceName: string;
-};
-
 export type StackMeta = {
   stackName: string;
   stackType: string;

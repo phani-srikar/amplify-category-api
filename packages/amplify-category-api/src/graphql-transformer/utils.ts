@@ -1,7 +1,15 @@
 import fs from 'fs-extra';
 import * as path from 'path';
 import { DeploymentResources } from '@aws-amplify/graphql-transformer-interfaces';
-import { TransformerProjectConfig } from '@aws-amplify/graphql-transformer-core';
+import {
+  TransformerProjectConfig,
+  AmplifyApiGraphQlResourceStackTemplate,
+  AppsyncStackCommon,
+  FunctionDirectiveStack,
+  HttpsDirectiveStack,
+  ModelDirectiveStack,
+  OpenSearchDirectiveStack,
+} from '@aws-amplify/graphql-transformer-core';
 import rimraf from 'rimraf';
 import {
   $TSContext, AmplifyCategories, CloudformationProviderFacade, JSONUtilities, pathManager, stateManager,
@@ -13,14 +21,6 @@ import { printer } from '@aws-amplify/amplify-prompts';
 import { CfnResource } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 
-import {
-  AmplifyApiGraphQlResourceStackTemplate,
-  AppsyncStackCommon,
-  FunctionDirectiveStack,
-  HttpsDirectiveStack,
-  ModelDirectiveStack,
-  OpenSearchDirectiveStack,
-} from './amplify-api-resource-stack-types';
 import { ConstructResourceMeta } from './types';
 
 const PARAMETERS_FILE_NAME = 'parameters.json';
