@@ -8,14 +8,12 @@ import {
   TransformerPluginProvider,
   TransformHostProvider,
   TransformerLog,
-  TransformerLogLevel,
   TransformerFilepathsProvider,
 } from '@aws-amplify/graphql-transformer-interfaces';
 import { AuthorizationMode, AuthorizationType } from 'aws-cdk-lib/aws-appsync';
 import {
-  App, Aws, CfnOutput, CfnResource, Fn,
+  App, Aws, CfnOutput, Fn,
 } from 'aws-cdk-lib';
-import * as fs from 'fs-extra';
 import {
   EnumTypeDefinitionNode,
   EnumValueDefinitionNode,
@@ -33,22 +31,17 @@ import {
   print
 } from 'graphql';
 import _ from 'lodash';
-import * as path from 'path';
-import * as vm from 'vm2';
-import { stateManager } from '@aws-amplify/amplify-cli-core';
 import { ResolverConfig, TransformConfig } from '../config/transformer-config';
-import { InvalidTransformerError, SchemaValidationError, UnknownDirectiveError, InvalidOverrideError } from '../errors';
+import { InvalidTransformerError, SchemaValidationError, UnknownDirectiveError } from '../errors';
 import { GraphQLApi } from '../graphql-api';
 import { TransformerContext } from '../transformer-context';
 import { TransformerOutput } from '../transformer-context/output';
 import { StackManager } from '../transformer-context/stack-manager';
-import { ConstructResourceMeta } from '../types/types';
-import { convertToAppsyncResourceObj, getStackMeta } from '../types/utils';
 import { adoptAuthModes, IAM_AUTH_ROLE_PARAMETER, IAM_UNAUTH_ROLE_PARAMETER } from '../utils/authType';
 import * as SyncUtils from './sync-utils';
 import { MappingTemplate } from '../cdk-compat';
 
-import { UserDefinedSlot, OverrideConfig, DatasourceTransformationConfig } from './types';
+import { UserDefinedSlot, DatasourceTransformationConfig } from './types';
 import {
   makeSeenTransformationKey,
   matchArgumentDirective,
@@ -61,7 +54,6 @@ import {
 import { validateAuthModes, validateModelSchema } from './validation';
 import { DocumentNode } from 'graphql/language';
 import { TransformerPreProcessContext } from '../transformer-context/pre-process-context';
-import { AmplifyApiGraphQlResourceStackTemplate } from '../types/amplify-api-resource-stack-types';
 import { DatasourceType } from '../config/project-config';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -94,7 +86,6 @@ export interface GraphQLTransformOptions {
   readonly disableResolverDeduping?: boolean;
   readonly userDefinedSlots?: Record<string, UserDefinedSlot[]>;
   readonly resolverConfig?: ResolverConfig;
-  readonly overrideConfig?: OverrideConfig;
   readonly filepaths?: TransformerFilepathsProvider;
 }
 export type StackMapping = { [resourceId: string]: string };
@@ -107,7 +98,6 @@ export class GraphQLTransform {
   private readonly resolverConfig?: ResolverConfig;
   private readonly buildParameters: Record<string, any>;
   private readonly userDefinedSlots: Record<string, UserDefinedSlot[]>;
-  private readonly overrideConfig?: OverrideConfig;
   private readonly filepaths: TransformerFilepathsProvider;
 
   // A map from `${directive}.${typename}.${fieldName?}`: true
@@ -142,7 +132,6 @@ export class GraphQLTransform {
     this.transformConfig = options.transformConfig || {};
     this.userDefinedSlots = options.userDefinedSlots || ({} as Record<string, UserDefinedSlot[]>);
     this.resolverConfig = options.resolverConfig || {};
-    this.overrideConfig = options.overrideConfig;
     this.filepaths = options.filepaths || {
       getBackendDirPath: () => { throw new Error('Unable to get backend dir path.') },
       findProjectRoot: () => { throw new Error('Unable to find project root.') },
@@ -324,88 +313,14 @@ export class GraphQLTransform {
       }
     }
     this.collectResolvers(context, context.api);
+    /*
     if (this.overrideConfig?.overrideFlag) {
       this.applyOverride(stackManager);
       return this.synthesize(context);
     }
+    */
     return this.synthesize(context);
   }
-
-  public applyOverride = (stackManager: StackManager): AmplifyApiGraphQlResourceStackTemplate => {
-    if (!this.overrideConfig?.overrideFlag) {
-      return {};
-    }
-
-    const overrideFilePath = path.join(this.overrideConfig!.overrideDir, 'build', 'override.js');
-    if (!fs.existsSync(overrideFilePath)) {
-      return {};
-    }
-
-    const stacks: string[] = [];
-    const amplifyApiObj: any = {};
-    stackManager.rootStack.node.findAll().forEach((node) => {
-      const resource = node as CfnResource;
-      if (resource.cfnResourceType === 'AWS::CloudFormation::Stack') {
-        stacks.push(node.node.id.split('.')[0]);
-      }
-    });
-
-    stackManager.rootStack.node.findAll().forEach((node) => {
-      const resource = node as CfnResource;
-      let pathArr;
-      if (node.node.id === 'Resource') {
-        pathArr = node.node.path.split('/').filter((key) => key !== node.node.id);
-      } else {
-        pathArr = node.node.path.split('/');
-      }
-      let constructPathObj: ConstructResourceMeta;
-      if (resource.cfnResourceType) {
-        constructPathObj = getStackMeta(pathArr, node.node.id, stacks, resource);
-        if (!_.isEmpty(constructPathObj.rootStack)) {
-          // api scope
-          const field = constructPathObj.rootStack!.stackType;
-          const { resourceName } = constructPathObj;
-          _.set(amplifyApiObj, [field, resourceName], resource);
-        } else if (!_.isEmpty(constructPathObj.nestedStack)) {
-          const fieldType = constructPathObj.nestedStack!.stackType;
-          const fieldName = constructPathObj.nestedStack!.stackName;
-          const { resourceName } = constructPathObj;
-          if (constructPathObj.resourceType.includes('Resolver')) {
-            _.set(amplifyApiObj, [fieldType, fieldName, 'resolvers', resourceName], resource);
-          } else if (constructPathObj.resourceType.includes('FunctionConfiguration')) {
-            _.set(amplifyApiObj, [fieldType, fieldName, 'appsyncFunctions', resourceName], resource);
-          } else {
-            _.set(amplifyApiObj, [fieldType, fieldName, resourceName], resource);
-          }
-        }
-      }
-    });
-
-    const appsyncResourceObj = convertToAppsyncResourceObj(amplifyApiObj);
-    const overrideCode: string = fs.readFileSync(overrideFilePath, 'utf-8');
-    const sandboxNode = new vm.NodeVM({
-      console: 'inherit',
-      timeout: 5000,
-      sandbox: {},
-      require: {
-        context: 'sandbox',
-        builtin: ['path'],
-        external: true,
-      },
-    });
-    // Remove these when moving override up to amplify-category-api level
-    const { envName } = stateManager.getLocalEnvInfo();
-    const { projectName } = stateManager.getProjectConfig();
-    const projectInfo = {
-      envName, projectName,
-    };
-    try {
-      sandboxNode.run(overrideCode, overrideFilePath).override(appsyncResourceObj, projectInfo);
-    } catch (err) {
-      throw new InvalidOverrideError(err);
-    }
-    return appsyncResourceObj;
-  };
 
   protected generateGraphQlApi(stackManager: StackManager, output: TransformerOutput): GraphQLApi {
     // Todo: Move this to its own transformer plugin to support modifying the API

@@ -14,12 +14,6 @@ export type UserDefinedResolver = {
   template: string;
 };
 
-export type OverrideConfig = {
-  overrideFlag: boolean;
-  overrideDir: string;
-  resourceName: string;
-};
-
 export type DatasourceTransformationConfig = {
   modelToDatasourceMap?: Map<string, DatasourceType>;
   datasourceSecretParameterLocations?: Map<string, RDSConnectionSecrets>;

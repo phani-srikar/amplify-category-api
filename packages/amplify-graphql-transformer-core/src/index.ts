@@ -7,7 +7,6 @@ export {
   SyncUtils,
 } from './transformation';
 export {
-  OverrideConfig,
   UserDefinedSlot,
   UserDefinedResolver,
 } from './transformation/types';
@@ -75,5 +74,3 @@ export {
   InputObjectDefinitionWrapper,
   ObjectDefinitionWrapper,
 } from './wrappers/object-definition-wrapper';
-
-export { AmplifyApiGraphQlResourceStackTemplate } from './types/amplify-api-resource-stack-types';
