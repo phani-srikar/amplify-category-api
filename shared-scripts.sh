@@ -388,7 +388,7 @@ function emitCanaryFailureMetric {
     fi
 }
 
-function deploy {
+function _deploy {
   echo "Deploy"
   loadCacheFromBuildJob
   echo "Authenticate with NPM"

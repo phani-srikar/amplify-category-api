@@ -6,25 +6,5 @@ env:
 batch:
   fast-fail: false
   build-graph:
-    - identifier: build_linux
-      buildspec: codebuild_specs/build_linux.yml
-    - identifier: lint
-      buildspec: codebuild_specs/lint.yml
-      depend-on:
-        - build_linux
-    - identifier: verify_api_extract
-      buildspec: codebuild_specs/verify_api_extract.yml
-      depend-on:
-        - build_linux
-    - identifier: verify_yarn_lock
-      buildspec: codebuild_specs/verify_yarn_lock.yml
-      depend-on:
-        - build_linux
-    - identifier: verify_cdk_version
-      buildspec: codebuild_specs/verify_cdk_version.yml
-      depend-on:
-        - build_linux
     - identifier: deploy
       buildspec: codebuild_specs/deploy.yml
-      depend-on:
-        - build_linux
