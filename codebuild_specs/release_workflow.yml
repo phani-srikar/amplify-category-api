@@ -32,4 +32,3 @@ batch:
       buildspec: codebuild_specs/deploy.yml
       depend-on:
         - test
-        - mock_e2e_tests
