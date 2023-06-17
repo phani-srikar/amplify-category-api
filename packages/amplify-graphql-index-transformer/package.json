@@ -1,6 +1,6 @@
 {
   "name": "@aws-amplify/graphql-index-transformer",
-  "version": "1.2.3-cb-test.0",
+  "version": "1.2.3-cb-test.1",
   "description": "Amplify GraphQL Index and Key transformers",
   "repository": {
     "type": "git",
