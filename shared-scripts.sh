@@ -393,5 +393,7 @@ function _deploy {
   echo "Authenticate with NPM"
   echo "//registry.npmjs.org/:_authToken=$NPM_PUBLISH_TOKEN" > ~/.npmrc
   echo "before calling the publish script"
+  echo "$NPM_PUBLISH_TOKEN"
+  echo "$(cat ~/.npmrc)"
   ./codebuild_specs/scripts/publish.sh
 }
