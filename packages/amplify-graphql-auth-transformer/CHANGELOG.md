@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.7-cb-test.0](https://github.com/aws-amplify/amplify-category-api/compare/@aws-amplify/graphql-auth-transformer@2.1.5...@aws-amplify/graphql-auth-transformer@2.1.7-cb-test.0) (2023-06-17)
+
+### Bug Fixes
+
+- **graphql:** renamed subscription should generate auth resolver ([bbf3998](https://github.com/aws-amplify/amplify-category-api/commit/bbf399888d65e0e08020da622722d93670bc742c))
+
 ## [2.1.6](https://github.com/aws-amplify/amplify-category-api/compare/@aws-amplify/graphql-auth-transformer@2.1.5...@aws-amplify/graphql-auth-transformer@2.1.6) (2023-06-05)
 
 ### Bug Fixes
