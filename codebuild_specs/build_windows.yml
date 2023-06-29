@@ -8,7 +8,7 @@ phases:
   build:
     commands:
       - node -v
-      - yarn --version
+      - npm --version
       - npm install -g yarn
       - yarn --version
       - yarn run production-build
