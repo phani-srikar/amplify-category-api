@@ -9,6 +9,7 @@ phases:
     commands:
       - node -v
       - npm --version
+      - npm cache clean --force
       - npm install -g yarn
       - npm install -g node-pty
       - npm uninstall -g node-gyp
