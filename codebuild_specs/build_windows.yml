@@ -11,7 +11,7 @@ phases:
       - npm --version
       - npm cache clean --force
       - npm install -g yarn
-      - npm install -g node-pty
+      # - npm install -g node-pty
       - npm uninstall -g node-gyp
       - npm install -g node-gyp
       - yarn --version
